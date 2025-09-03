@@ -1,13 +1,71 @@
 package Stream;
 
+import java.math.BigInteger;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 //enum Gender {
 //    male,
 //    female
 //}
+class Employee {
+    private Long id;
+    private String name;
+    private String dept;
+    private Integer salary;
 
+    public Employee(Long id, String name, String dept, Integer salary) {
+        this.id = id;
+        this.name = name;
+        this.dept = dept;
+        this.salary = salary;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDept() {
+        return dept;
+    }
+
+    public void setDept(String dept) {
+        this.dept = dept;
+    }
+
+    public Integer getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Integer salary) {
+        this.salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", dept='" + dept + '\'' +
+                ", salary=" + salary +
+                '}';
+    }
+}
 class NameComparator implements Comparator<Students>{
 
 
@@ -177,6 +235,30 @@ List<Students> unqstd= stud.stream().distinct().collect(Collectors.toCollection(
                 .collect(Collectors.groupingBy(word-> word, Collectors.counting()));
 
         System.out.println(colectWord.values().stream().max(Comparator.comparing(Long::longValue)));
+
+
+
+        String input = "basant";
+      Map <String, Long> count = Arrays.stream(input.split("")).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(count.entrySet());
+
+        List<Employee >employees= Stream.of(
+                new Employee(1l,"edqdwe", "DEV", 10_00_00_000),
+                new Employee(2l,"brdfdf", "Qa", 100000000),
+                new Employee(3l,"dbdtbdb", "DEV", 200000000),
+                new Employee(14l,"nmnuhn", "DEV", 300000000),
+                new Employee(15l,"nmnuhn", "DEVOPS", 100000000)
+
+
+        ).collect(Collectors.toList());
+        System.out.println(employees.stream().collect(Collectors.groupingBy(Employee::getDept, Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparingDouble(Employee::getSalary)), Optional::get))));
+
+        IntStream.rangeClosed(1,20).forEach(t-> System.out.println(Thread.currentThread().getName()+t));
+        System.out.println("===========================");
+        IntStream.rangeClosed(1,20).parallel().forEach(t-> System.out.println(Thread.currentThread().getName()+t));
+
+
+
 
     }
 }
